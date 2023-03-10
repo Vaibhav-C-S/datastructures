@@ -1,0 +1,60 @@
+
+check whether the linked list is palindrome or not
+Given the head of a singly linked list, return true if it is a 
+palindrome
+ or false otherwise.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,2,1]
+Output: true
+Example 2:
+
+
+Input: head = [1,2]
+Output: false
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [1, 105].
+0 <= Node.val <= 9
+
+
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def isPalindrome(self, head):
+        slow = head
+        fast = head
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+
+        #now slow is pointing the middle
+        #from slow, we shall now reverse the list
+        before = None
+        temp = slow
+        while temp is not None:
+            after = temp.next
+            temp.next = before
+            before = temp
+            temp = after
+        #comparing both halves
+
+        right = before
+        left = head
+        while right is not None:
+            if (left.val == right.val):
+                left = left.next
+                right = right.next
+            else:
+                return False
+        return True
