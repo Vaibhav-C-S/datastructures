@@ -5,7 +5,7 @@ how to reverse a linked list
         temp = self.head
         self.head = self.tail
         self.tail = temp
-        before = temp.next.next
+        before = None
         after = temp.next
         while temp is not None:
             after = temp.next
