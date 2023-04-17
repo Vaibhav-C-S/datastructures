@@ -1,0 +1,26 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+# Height-Balanced
+# A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        self.flag = True
+        def height(root,current_height=0):
+            
+            if root is None:
+                return current_height
+            else:
+                left = height(root.left,current_height+1)
+                right = height(root.right,current_height+1)
+                if(abs(left - right) > 1):
+                    
+                    self.flag = False
+                    
+                return max(left,right)
+        height(root)
+        return self.flag
