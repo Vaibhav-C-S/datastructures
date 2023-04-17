@@ -29,4 +29,8 @@ def mergesort(arr):
 arr=[2,1,4,6,5,3]
 print(mergesort(arr))
 
+----------------------------------------------------
+TIME COMPLEXITY : O(nlogn)
+space complexity :O(n)
+
 
