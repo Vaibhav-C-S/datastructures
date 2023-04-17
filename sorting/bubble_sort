@@ -1,0 +1,17 @@
+def bubblesort(arr):
+    for i in range(len(arr)):
+        swapped = True
+        for j in range(len(arr)-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j],arr[j+1] = arr[j+1],arr[j]
+                swapped = False
+        if not swapped:
+            break
+    return arr
+
+arr=[1,5,2,4,3,6]
+print(bubblesort(arr))
+
+-------------------------
+time complexity - o(n)
+space - o(1)
