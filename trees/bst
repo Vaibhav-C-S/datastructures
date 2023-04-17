@@ -1,0 +1,122 @@
+class Node:
+    def __init__(self,value=None):
+        self.value = value
+        self.left = None
+        self.right = None
+
+class BinarySearchTrees:
+    def __init__(self):
+        self.root = None
+
+    def insert(self,value):
+
+        if self.root is None:
+            self.root = Node(value)
+        else:
+            self._insert(value,self.root)
+    def _insert(self,value,temp):
+        if value < temp.value:
+            if temp.left is None:
+                temp.left = Node(value)
+            else:
+                self._insert(value,temp.left)
+        elif value > temp.value:
+            if temp.right is None:
+                temp.right = Node(value)
+            else:
+                self._insert(value,temp.right)
+        else:
+            print("value already in the tree")
+
+    def height(self):
+        if self.root is not None:
+            self._height(self.root,0)
+        else:
+            return 0
+
+    def _height(self,temp,cur_height):
+        if temp is None: return cur_height
+        left_height = self._height(temp.left,cur_height+1)
+        right_height = self._height(temp.right, cur_height + 1)
+        return max(left_height,right_height)
+
+    def search(self,value):
+        if self.root.value == value:
+            return True
+        elif self.root != None:
+            self._search(value,self.root)
+        else:
+            return False
+
+    def _search(self,value,temp):
+        if value == temp.value:
+            return True
+        elif value < temp.value and temp.left is not None:
+            self._search(value,temp.left)
+        elif value > temp.value and temp.right is not None:
+            self._search(value,temp.right)
+        return False
+
+    def find_level(self, value):
+        return self._find_level(self.root, value, 1)
+
+    def _find_level(self, node, value, level):
+        if node is None:
+            return 0
+        if node.value == value:
+            return level
+        elif node.value > value:
+            return self._find_level(node.left, value, level + 1)
+        else:
+            return self._find_level(node.right, value, level + 1)
+
+    def delete(self, value):
+        if self.root is not None:
+            self.root = self._delete(self.root, value)
+        return
+
+    def _delete(self, node, value):
+        if node is None:
+            return node
+        if value < node.value:
+            node.left = self._delete(node.left, value)
+        elif value > node.value:
+            node.right = self._delete(node.right, value)
+        else:
+            if node.left is None:
+                temp = node.right
+                node = None
+                return temp
+            elif node.right is None:
+                temp = node.left
+                node = None
+                return temp
+            temp = self._min_value_node(node.right)
+            node.value = temp.value
+            node.right = self._delete(node.right, node.value)
+        return node
+
+    def _min_value_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def print_tree(self):
+        if self.root is not None:
+            self._print_tree(self.root)
+
+    def _print_tree(self,temp):
+        if temp is not None:
+            self._print_tree(temp.left)
+            print(temp.value)
+            self._print_tree(temp.right)
+
+
+tree = BinarySearchTrees()
+tree.insert(1)
+tree.insert(4)
+tree.insert(3)
+tree.print_tree()
+tree.delete(4)
+tree.print_tree()
