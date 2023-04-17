@@ -1,0 +1,21 @@
+def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        self.diameter = 0
+        
+        def dfs(node):
+            if not node:
+				# my parent is a leaf (and the leaf base case has diameter = 0)
+                return 0 
+				
+            # len(longest path from r.left/right to some leaf)
+            lclp2l, rclp2l = dfs(node.left), dfs(node.right) 
+            
+            # diameter including this node is # edges on left path + #E(right)
+            d = lclp2l + rclp2l
+            self.diameter = max(d, self.diameter)
+            
+            # tell my parent the length of the longest path to a leaf that goes through me
+			# this is just the maximum of the same problem but for each of my children and +1  
+			#  to include the edge from me to the longest child 
+            return max(lclp2l, rclp2l) + 1     
+        dfs(root)
+        return self.diameter
