@@ -1,0 +1,98 @@
+class minheap:
+    def __init__(self,capacity):
+        self.storage = [0] * capacity
+        self.capacity = capacity
+        self.size =0
+
+    def getparentindex(self,index):
+        return (index-1)//2
+
+    def getleftchildindex(self,index):
+        return 2*index +1
+    def getrightchildindex(self,index):
+        return 2*index +2
+    def hasparent(self,index):
+        return self.getparentindex(index)>=0
+    def hasleftchild(self,index):
+        return self.getleftchildindex(index) < self.size
+    def hasrightchild(self,index):
+        return self.getrightchildindex(index) < self.size
+    def parent(self,index):
+        return self.storage[self.getparentindex(index)]
+    def leftchild(self,index):
+        return self.storage[self.getleftchildindex(index)]
+    def rightchild(self,index):
+        return self.storage[self.getrightchildindex(index)]
+    def isFull(self):
+        return self.size == self.capacity
+    def swap(self,index1,index2):
+        temp = self.storage[index1]
+        self.storage[index1] = self.storage[index2]
+        self.storage[index2] = temp
+
+    def insert(self,data):
+        if (self.isFull()):
+            raise("heap is full")
+        self.storage[self.size]=data
+        self.size +=1
+        self.heapifyUp()
+
+    def heapifyUp(self):
+        index = self.size -1
+        while (self.hasparent(index) and self.parent(index)>self.storage[index]):
+            self.swap(self.getparentindex(index),index)
+            index = self.getparentindex(index)
+
+    def heapifyUpR(self,index):
+        if self.hasparent(index) and self.parent(index)<self.storage[index]:
+            self.swap(self.getparentindex(index), index)
+            self.heapifyUpR(self.getparentindex(index))
+
+    def remove_min(self):
+        if (self.size ==0):
+            raise("empty heap")
+        data = self.storage[0]
+        self.storage[0]=self.storage[self.size -1]
+        self.storage.pop()
+        self.size-=1
+        self.heapifyDown()
+
+        return data
+
+    def heapifyDown(self):
+        index =0
+        while(self.hasleftchild(index)):
+            smallerchildindex = self.getleftchildindex(index)
+            if(self.hasrightchild(index) and self.rightchild(index)<self.leftchild(index)):
+                smallerchildindex = self.getrightchildindex(index)
+            if(self.storage[index]<self.storage[smallerchildindex]):
+                break
+            else:
+                self.swap(index,smallerchildindex)
+            index = smallerchildindex
+
+    def heapifyDownR(self,index):
+        smallest = index
+        if(self.hasleftchild(index) and self.storage[smallest]>self.leftchild(index)):
+            smallest = self.getleftchildindex(index)
+        if self.hasrightchild(index) and self.storage[smallest]>self.rightchild(index):
+            smallest = self.getrightchildindex(index)
+        if smallest != index:
+            self.swap(index,smallest)
+            self.heapifyUpR(index)
+
+heap = minheap(9)
+heap.insert(2)
+heap.insert(1)
+heap.insert(4)
+while (heap.size != 0):
+    data = heap.remove_min()
+    print(data)
+
+
+
+----------------------------------
+time complexities for insertion and deletion
+Time Complexity:  O(log(n)) (where n is no of elements in the heap)
+
+Auxiliary Space: O(n)
