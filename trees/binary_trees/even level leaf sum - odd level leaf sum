@@ -1,0 +1,50 @@
+'''
+
+Given the root of a binary tree, return the difference between the sum of all nodes present at odd levels and the sum of all nodes present at even level.
+
+Input:
+		   1
+		  /  \
+		 /	  \
+	   2	   3
+	  /		  / \
+	 /	   /   \
+	4	  	5	    6
+		   / \
+		  /	  \
+		 7	   8
+
+Output: -4
+
+Explanation: The difference is (1 + 4 + 5 + 6) - (2 + 3 + 7 + 8) = -4
+
+'''
+
+class Solution:
+
+	'''
+	A binary tree node is defined as:
+
+	class Node:
+		def __init__(self, data=None, left=None, right=None):
+			self.data = data	# data field
+			self.left = left	# pointer to the left child
+			self.right = right	# pointer to the right child
+	'''
+
+	def findDifference(self, root: Node) -> int:
+		self.evensum=0
+		self.oddsum=0
+		def finddif(root,level=0):
+			if root is None:
+				return 0
+			if level%2==0:
+				self.evensum+=root.data
+			else:
+				self.oddsum+=root.data
+			finddif(root.left,level+1)
+			finddif(root.right,level+1)
+			return self.evensum-self.oddsum
+				
+		return finddif(root,0)
+
