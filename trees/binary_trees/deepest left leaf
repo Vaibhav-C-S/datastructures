@@ -1,0 +1,24 @@
+class Solution(object):
+    def findBottomLeftValue(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        self.currentlevel = 0
+        self.deepestNode = None
+        
+        def findval(root, level=0, isLeft=True):
+            if root is None:
+                return
+            else:
+                if isLeft and root.left is None and root.right is None and level > self.currentlevel:
+                    self.deepestNode = root
+                    self.currentlevel = level
+                else:
+                    findval(root.left, level + 1, isLeft=True)
+                    findval(root.right, level + 1, isLeft=False)
+            
+            return self.deepestNode
+        
+        deepestNode = findval(root, 1, True)
+        return deepestNode.val
