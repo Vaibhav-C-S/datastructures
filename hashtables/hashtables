@@ -1,0 +1,44 @@
+class HashMap:
+    def __init__(self, size):
+        self.size = size
+        self.hashmap = [[] for _ in range(self.size)]
+
+    def hashfunction(self, key):
+        my_hash = 0
+        for letter in key:
+            my_hash += (ord(letter) * 23) % self.size
+        return my_hash % self.size
+
+    def print_table(self):
+        for key, val in enumerate(self.hashmap):
+            print(key, ":", val)
+
+    def __setitem__(self, key, val):
+        index = self.hashfunction(key)
+        for idx, element in enumerate(self.hashmap[index]):
+            if element[0] == key:
+                self.hashmap[index][idx] = [key, val]
+                return
+        self.hashmap[index].append([key, val])
+
+    def __getitem__(self, key):
+        h = self.hashfunction(key)
+        for k, v in enumerate(self.hashmap[h]):
+            if v[0] == key:
+                return v[1]
+        raise KeyError(key)
+
+    def __delitem__(self, key):
+        h = self.hashfunction(key)
+        for idx,element in enumerate(self.hashmap[h]):
+            if element[0] == key:
+                del self.hashmap[h][idx]
+
+
+my_Hash_Table = HashMap(7)
+my_Hash_Table['march9'] = 202
+my_Hash_Table['march9'] = 22
+my_Hash_Table['march19']=222
+print(my_Hash_Table['march19'])
+del my_Hash_Table['march19']
+my_Hash_Table.print_table()
