@@ -1,0 +1,202 @@
+from queue import Queue
+class Graph:
+    def __init__(self):
+        self.adj_list={}
+
+    def add_vertex(self,vertex):
+        if vertex  not in self.adj_list.keys():
+            self.adj_list[vertex]=[]
+            return True
+        return False
+
+    def print_graph(self):
+        for vertex in self.adj_list.keys():
+            print(f"{vertex}  :  {self.adj_list[vertex]}")
+
+    def add_edge(self,v1,v2):
+        if v1 in self.adj_list.keys() and v2 in self.adj_list.keys():
+            self.adj_list[v1].append(v2)
+            self.adj_list[v2].append(v1)
+            return True
+        return False
+
+    def remove_edge(self,v1,v2):
+        if v1 in self.adj_list.keys() and v2 in self.adj_list.keys():
+            try:
+                self.adj_list[v1].remove(v2)
+                self.adj_list[v2].remove(v1)
+            except ValueError:
+                pass
+            return True
+        return False
+
+    def remove_vertex(self,v1):
+        if v1 in self.adj_list.keys():
+            for item in self.adj_list[v1]:
+                self.remove_edge(v1,item)
+
+            del self.adj_list[v1]
+            return True
+        return False
+
+    def bfs(self, start_vertex):
+        self.self.visited = []
+        self.queue = []
+        self.self.visited.append(start_vertex)
+        self.queue.append(start_vertex)
+        while self.queue:
+            m = self.queue.pop(0)
+            print(m, end=" ")
+            for neighbour in self.adj_list[m]:
+                if neighbour not in self.self.visited:
+                    self.self.visited.append(neighbour)
+                    self.queue.append(neighbour)
+        print()
+
+    from queue import Queue
+
+    def bfs2(self, start_vertex):
+        self.visited = {}
+        self.level = {}
+        self.parent = {}
+        bfs_traversal_output = []
+        queue = Queue()
+
+        for node in self.adj_list:
+            self.visited[node] = False
+            self.level[node] = -1
+            self.parent[node] = None
+
+        self.visited[start_vertex] = True
+        self.level[start_vertex] = 0
+        queue.put(start_vertex)
+
+        while not queue.empty():
+            u = queue.get()
+            bfs_traversal_output.append(u)
+            for neighbour in self.adj_list[u]:
+                if not self.visited[neighbour]:
+                    self.visited[neighbour] = True
+                    self.parent[neighbour] = u
+                    self.level[neighbour] = self.level[u] + 1
+                    queue.put(neighbour)
+
+        return bfs_traversal_output
+
+    def shortest_path_bfs(self,start_vertex,end_vertex):
+        self.bfs2(start_vertex)
+        path=[]
+        temp = end_vertex
+        while temp is not None:
+            path.append(temp)
+            temp=self.parent[temp]
+        path.reverse()
+        print(path)
+
+    def bfs3(self, start_vertex,obstacles=None):
+        self.visited = {}
+        self.level = {}
+        self.parent = {}
+        self.obstacles={}
+        self.bfs_traversal_output = []
+        queue = Queue()
+
+
+        for node in self.adj_list:
+            self.visited[node] = False
+            self.level[node] = -1
+            self.parent[node] = None
+            if obstacles is not None and node in obstacles:
+                self.obstacles[node]=True
+            else:
+                self.obstacles[node]=False
+        self.visited[start_vertex] = True
+        self.level[start_vertex] = 0
+        queue.put(start_vertex)
+
+        while not queue.empty():
+            u = queue.get()
+            self.bfs_traversal_output.append(u)
+            for neighbour in self.adj_list[u]:
+                if not self.visited[neighbour] and not self.obstacles[neighbour]:
+                    self.visited[neighbour] = True
+                    self.parent[neighbour] = u
+                    self.level[neighbour] = self.level[u] + 1
+                    queue.put(neighbour)
+
+        return self.bfs_traversal_output
+
+    def shortest_path_bfs2(self,start_vertex,end_vertex,obstacles=None):
+        self.bfs3(start_vertex,obstacles)
+        path=[]
+        temp = end_vertex
+        while temp is not None:
+            path.append(temp)
+            temp=self.parent[temp]
+        path.reverse()
+        if path[0] == start_vertex:
+            print(path)
+        else:
+            print("path not possible , Obstacles !! can't get pass them")
+
+    def dfs(self,start_vertex):
+        stack=[]
+        self.visited=[]
+        stack.append(start_vertex)
+        self.visited.append(start_vertex)
+        while stack:
+            u = stack.pop()
+            print(u,end=" ")
+            for neighbour in self.adj_list[u]:
+                if neighbour not in self.visited:
+                    self.visited.append(neighbour)
+                    stack.append(neighbour)
+
+    def dfsR(self,start_vertex):
+        self.visitedset=set()
+        self._dfsR(start_vertex)
+    def _dfsR(self,start_vertex):
+        self.visitedset.add(start_vertex)
+        print(start_vertex,end=" ")
+        for neighbour in self.adj_list[start_vertex]:
+            if neighbour not in self.visitedset:
+                self._dfsR(neighbour)
+
+    def all_possible_paths(self, source, target):
+        self.paths = []
+        self._all_possible_paths(source, target, [])
+        print(self.paths)
+
+    def _all_possible_paths(self, current, target, visited):
+        visited.append(current)
+
+        if current == target:
+            self.paths.append(list(visited))
+        else:
+            for neighbour in self.adj_list[current]:
+                if neighbour not in visited:
+                    self._all_possible_paths(neighbour, target, visited)
+
+        visited.pop()
+
+
+graph = Graph()
+graph.adj_list={
+    0:[2,4,7,9],
+    1:[],
+    2:[7],
+    3:[9],
+    4:[5,9],
+    5:[3],
+    6:[1],
+    7:[1,6,8],
+    8:[],
+    9:[5]
+}
+graph.dfs(0)
+print()
+graph.dfsR(0)
+print()
+graph.all_possible_paths(0,1)
+
+graph.print_graph()
