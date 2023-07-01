@@ -1,64 +1,8 @@
 class Node:
-    def __init__(self,key,value):
-        self.key = key
-        self.value = value
-        self.next = None
-
-class Hashmap:
-    def __init__(self,capacity):
-        self.capacity = capacity
-        self.bucket = [None] * self.capacity
-
-    def hashfunction(self,key):
-        return key % self.capacity
-
-    def put(self,key,value):
-        index = self.hashfunction(key)
-        if self.bucket[index] is None:
-            self.bucket[index] = Node(key,value)
-        else:
-            temp = self.bucket[index]
-            while temp.next is not None:
-                if temp.key == key:
-                    temp.value = value
-                temp = temp.next
-            temp.next = Node(key,value)
-
-    def get(self,key):
-        index = self.hashfunction(key)
-        if self.bucket[index] is None:
-            return
-        else:
-            temp = self.bucket[index]
-            while temp is not None:
-                if temp.key == key:
-                    return temp.value
-                temp=temp.next
-            return
-
-    def delete(self, key):
-        index = self.hashfunction(key)
-        if self.bucket[index] is None:
-            return
-
-        if self.bucket[index].key == key:
-            self.bucket[index] = self.bucket[index].next
-            return
-
-        current = self.bucket[index]
-        while current.next is not None:
-            if current.next.key == key:
-                current.next = current.next.next
-                return
-            current = current.next
-
-
-class Node:
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
-
 
 class Hashmap:
     def __init__(self, capacity):
@@ -74,9 +18,10 @@ class Hashmap:
             self.bucket[index] = Node(key, value)
         else:
             temp = self.bucket[index]
-            while temp.next is not None:
+            while temp is not None:
                 if temp.key == key:
                     temp.value = value
+                    return
                 temp = temp.next
             temp.next = Node(key, value)
 
@@ -113,18 +58,13 @@ class Hashmap:
             temp = bucket
             print(f" {index} : ", end="[")
             while temp is not None:
-
-                print(f"[{temp.key} ,{temp.value}]", end=" ")
-
+                print(f"[{temp.key}, {temp.value}]", end=" ")
                 temp = temp.next
             print(end="]\n")
-
 
 if __name__ == "__main__":
     hashmap = Hashmap(10)
     hashmap.put(22, "charlie")
-    hashmap.put(23, "vaibhav")
+    hashmap.put(22, "vaibhav")
     hashmap.delete(33)
     hashmap.display()
-
-
