@@ -1,0 +1,63 @@
+class HashMap:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.table = [None] * capacity
+        self.size = 0
+
+    def hashFunction(self, key):
+        return key % self.capacity
+
+    def put(self, key, value):
+        if self.size == self.capacity:
+            raise Exception("Hashmap is full")
+        index = self.hashFunction(key)
+        while self.table[index] is not None:
+            if self.table[index][0] == key or self.table[index][0] == "!":
+                self.table[index] = [key, value]
+                self.size += 1
+                return
+            index = (index + 1) % self.capacity
+
+        self.table[index] = [key, value]
+        self.size += 1
+
+    def delete(self, key):
+        index = self.hashFunction(key)
+        while self.table[index] is not None:
+            if self.table[index][0] == key:
+                self.table[index] = ["!", "!"]
+                self.size -= 1
+                return
+            index = (index + 1) % self.capacity
+
+    def search(self, key):
+        index = self.hashFunction(key)
+        initial_index = index
+        while self.table[index] is not None:
+            if self.table[index][0] == key:
+                return self.table[index][1]
+            index = (index + 1) % self.capacity
+            if index == initial_index:
+                break
+        return None
+
+    def display(self):
+        for index, value in enumerate(self.table):
+            if value is not None and value[0] == "!":
+                value = None
+            print(f"{index}: {value}")
+
+
+hashmap = HashMap(10)
+for i in range(10):
+    hashmap.put(i, "mango")
+# Trying to add one more element when hashmap is full
+try:
+    hashmap.put(10, "apple")
+except Exception as e:
+    print(e)
+
+
+
+
+hashmap.display()
