@@ -1,0 +1,22 @@
+def bucketsort(a):
+    b = []
+    for i in range(10):
+        b.append([])
+    
+    for j  in a:
+        index_b = int(10*j)
+        b[index_b].append(j)
+    
+    for i in range(len(a)):
+        b[i] = sorted(b[i])
+    
+    k=0 
+    for i in range(len(a)):
+        for j in range(len(b[i])):
+            a[k] = b[i][j]
+            k+=1
+    
+    return a 
+a = [.12, .45, .33, .13, .56, .44,0.96]
+print("The sorted Array is")
+print(bucketsort(a))
